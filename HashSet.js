@@ -92,29 +92,28 @@ const HashSet = (function () {
 
     }
 
-    const setKey = function (key, newValue) {
+    const setKey = function (key) {
         let indx = hash(key);
 
         if (hMap[indx] == null) {
             hMap[indx] = LinkedList(key);
-        } else {
+        } else if (hMap[indx].headNode.value === key) {
+            console.log("key already exists.");
+        } else if (hMap[indx].headNode.nextNode !== null) {
             const subIndx = hMap[indx].find(key);
-            if (subIndx === 0 && newValue !== null) {
-                console.log(`updating head of linkedlist for key ${key}`);
-                hMap[indx].setHead(key, newValue);
-            } else if (subIndx > 0 && newValue !== null) {
-                console.log(`Updating existing key ${key}`);
-                hMap[indx].removeAt(subIndx);
-                hMap[indx].insertAt(subIndx, newValue);
+            if (subIndx !== null) {
+                console.log("subkey already exists.");
             } else {
-                console.log(`Key ${key} not found, appending`);
                 hMap[indx].append(key);
             }
-        } 
+        } else {
+            console.log(`Key ${key} not found, appending`);
+            hMap[indx].append(key);
+        }
 
     }
 
-    const set = function (key, newValue=null) {
+    const set = function (key) {
 
         const indx = hash(key);
 
@@ -131,34 +130,9 @@ const HashSet = (function () {
             }
         }
 
-        setKey(key, newValue);
+        setKey(key);
 
     }
-
-    const get = function (key) {
-        const indx = hash(key);
-        if (indx < 0 || indx >= hMap.length) {
-            throw new Error("Trying to access index out of bounds");
-        }
-
-        let returnValue = null;
-
-        if (hMap[indx] != null) {
-            let cur = hMap[indx].headNode;
-            while (cur !== null && returnValue === null) {
-                if (cur.value[0] === key) {
-                    returnValue = cur.value[1];
-                } else {
-                    cur = cur.nextNode;
-                }
-            }
-        }  
-
-        return returnValue;
-    }
-
-
-
 
     const remove = function (key) {
         const indx = hash(key);
@@ -186,23 +160,6 @@ const HashSet = (function () {
     }
 
 
-    const values = function () {
-        const values = [];
-        for (let i = 0; i < hMap.length; i++) {
-            if (hMap[i] != null) {
-                let cur = hMap[i].headNode;
-                while (cur !== null) {
-                    values.push(cur.value[1]);
-                    cur = cur.nextNode;
-                }
-
-            }
-        }
-
-        return values;
-    }
-
-
     const entries = function () {
         const entries = [];
         for (let i = 0; i < hMap.length; i++) {
@@ -225,12 +182,10 @@ const HashSet = (function () {
     return {
         hash,
         set,
-        get,
         has,
         remove,
         length,
         keys,
-        values,
         entries,
         clear,
         copyMap,
