@@ -6,6 +6,14 @@ const HashMap = (function () {
     let capacity = 16;
     let hMap = new Array(capacity);
 
+    const getHMap = function () {
+        return hMap;
+    }
+
+    const setHMap = function (arr) {
+        hMap = arr;
+    }
+
     const has = function (key) {
         const indx = hash(key);
         let found = false;
@@ -60,19 +68,19 @@ const HashMap = (function () {
     const copyMap = function (newArray) {
 
         for (let i = 0; i < hMap.length; i++) {
-            if (hMap[i] !== null) {
-                newArray[i] = hMap[i];
+            if (hMap[i] != null) {
+                const newIndx = hash(hMap[i].headNode.value[0]);
+                newArray[newIndx] = hMap[i];
             }
         }
 
-        hMap = newArray;
+        setHMap(newArray);
     }
 
-    const set = function (key, value) {
-
+    const resize = function () {
         const len = length();
 
-        if (len > (capacity * loadFactor)) {
+        if (len + 1 > (capacity * loadFactor)) {
             console.log("RESIZING HASH MAP");
             capacity = capacity * 2;
             const newArray = new Array(capacity);
@@ -80,6 +88,12 @@ const HashMap = (function () {
             console.log("resizing complete");
 
         }
+
+    }
+
+    const set = function (key, value) {
+
+        const hMap = getHMap();
 
         const indx = hash(key);
 
@@ -89,14 +103,16 @@ const HashMap = (function () {
         } else {
             const subIndx = hMap[indx].find(key);
             if (subIndx === 0) {
-                console.log("updating head of linkedlist");
+                console.log(`updating head of linkedlist for key ${key}`);
                 hMap[indx].setHead([key, value]);
             } else if (subIndx > 0) {
-                console.log("Updating existing key");
+                console.log(`Updating existing key ${key}`);
                 hMap[indx].removeAt(subIndx);
                 hMap[indx].insertAt(subIndx, [key, value]);
             } else {
-                console.log("Key not found, appending");
+                console.log(`Key ${key} not found, appending`);
+                resize();
+                const indx = hash(key);
                 hMap[indx].append([key, value]);
             }
         } 
