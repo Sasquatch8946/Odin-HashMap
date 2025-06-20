@@ -99,13 +99,8 @@ const HashSet = (function () {
             hMap[indx] = LinkedList(key);
         } else if (hMap[indx].headNode.value === key) {
             console.log("key already exists.");
-        } else if (hMap[indx].headNode.nextNode !== null) {
-            const subIndx = hMap[indx].find(key);
-            if (subIndx !== null) {
-                console.log("subkey already exists.");
-            } else {
-                hMap[indx].append(key);
-            }
+        } else if (hMap[indx].headNode.nextNode !== null && hMap[indx].find(key)) {
+            console.log("subkey already exists.");
         } else {
             console.log(`Key ${key} not found, appending`);
             hMap[indx].append(key);
