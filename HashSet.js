@@ -1,6 +1,6 @@
 import LinkedList from './LinkedList.js';
 
-const HashMap = (function () {
+const HashSet = (function () {
 
     let loadFactor = 0.75;
     let capacity = 16;
@@ -13,7 +13,7 @@ const HashMap = (function () {
         if (hMap[indx] != null) {
             let cur = hMap[indx];
             while (cur !== null && found === false) {
-                if (cur.findInArray(key, 0) != null) {
+                if (cur.find(key) != null) {
                     found = true;
                 } else {
                     cur = cur.nextNode;
@@ -31,7 +31,7 @@ const HashMap = (function () {
             if (hMap[i] != null) {
                 let cur = hMap[i].headNode;
                 while (cur !== null) {
-                    keys.push(cur.value[0]);
+                    keys.push(cur.value);
                     cur = cur.nextNode;
                 }
 
@@ -57,6 +57,19 @@ const HashMap = (function () {
         return hashCode;
     } 
 
+    const copyMap = function (newArray) {
+        const allEntries = entries(); 
+        hMap = newArray;
+        allEntries.forEach((entry) => {
+            const indx = hash(entry);
+            if (hMap[indx] == null) {
+                hMap[indx] = new LinkedList(entry);
+            } else {
+                hMap[indx].append(entry);
+            }
+        });
+    }
+
     const isAtCapacity = function () {
         if (length() >= capacity * loadFactor) {
             return true;
@@ -65,51 +78,43 @@ const HashMap = (function () {
         }
     }
 
-
-    const copyMap = function (newArray) {
-        const allEntries = entries(); 
-        hMap = newArray;
-        allEntries.forEach(([key, value]) => {
-            const indx = hash(key);
-            if (hMap[indx] == null) {
-                hMap[indx] = new LinkedList([key, value]);
-            } else {
-                hMap[indx].append([key, value]);
-            }
-        });
-    }
-
     const resize = function () {
-        console.log("RESIZING HASH MAP");
-        capacity = capacity * 2;
-        const newArray = new Array(capacity);
-        copyMap(newArray);
-        console.log("resizing complete");
+        const len = length();
+
+        if (len + 1 > (capacity * loadFactor)) {
+            console.log("RESIZING HASH MAP");
+            capacity = capacity * 2;
+            const newArray = new Array(capacity);
+            copyMap(newArray);
+            console.log("resizing complete");
+
+        }
+
     }
 
-    const setKey = function (key, value) {
+    const setKey = function (key, newValue) {
         let indx = hash(key);
 
         if (hMap[indx] == null) {
-            hMap[indx] = LinkedList([key, value]);
+            hMap[indx] = LinkedList(key);
         } else {
-            const subIndx = hMap[indx].findInArray(key, 0);
-            if (subIndx === 0) {
+            const subIndx = hMap[indx].find(key);
+            if (subIndx === 0 && newValue !== null) {
                 console.log(`updating head of linkedlist for key ${key}`);
-                hMap[indx].setHead([key, value]);
-            } else if (subIndx > 0) {
+                hMap[indx].setHead(key, newValue);
+            } else if (subIndx > 0 && newValue !== null) {
                 console.log(`Updating existing key ${key}`);
                 hMap[indx].removeAt(subIndx);
-                hMap[indx].insertAt(subIndx, [key, value]);
+                hMap[indx].insertAt(subIndx, newValue);
             } else {
                 console.log(`Key ${key} not found, appending`);
-                hMap[indx].append([key, value]);
+                hMap[indx].append(key);
             }
         } 
 
     }
 
-    const set = function (key, value) {
+    const set = function (key, newValue=null) {
 
         const indx = hash(key);
 
@@ -118,7 +123,7 @@ const HashMap = (function () {
                 resize();
             }
         } else {
-            const subIndx = hMap[indx].findInArray(key, 0);
+            const subIndx = hMap[indx].find(key);
             if (subIndx === null) {
                 if (isAtCapacity()) {
                     resize();
@@ -126,10 +131,9 @@ const HashMap = (function () {
             }
         }
 
-        setKey(key, value);
+        setKey(key, newValue);
 
     }
-
 
     const get = function (key) {
         const indx = hash(key);
@@ -163,7 +167,7 @@ const HashMap = (function () {
         }
 
         if (has(key)) {
-            const subIndx = hMap[indx].findInArray(key, 0);
+            const subIndx = hMap[indx].find(key);
             if (subIndx != null) {
                 hMap[indx].removeAt(subIndx);
                 return true;
@@ -234,4 +238,4 @@ const HashMap = (function () {
     }
 });
 
-export default HashMap;
+export default HashSet;

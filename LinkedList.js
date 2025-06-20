@@ -114,7 +114,7 @@ const LinkedList = (function (headData=null) {
         let count = 0;
 
         while (cur !== null && indx === null) {
-            if (cur.value[0] === value) {
+            if (cur.value === value) {
                 indx = count;
             } else {
                 count = count + 1;
@@ -124,6 +124,24 @@ const LinkedList = (function (headData=null) {
 
         return indx;
     }
+
+    const findInArray = function (value, index) {
+        let cur = head();
+        let indx = null;
+        let count = 0;
+
+        while (cur !== null && indx === null) {
+            if (cur.value[index] === value) {
+                indx = count;
+            } else {
+                count = count + 1;
+                cur = cur.nextNode;
+            }
+        }
+
+        return indx;
+    }
+
 
     const toString = function () {
         let cur = head();
@@ -209,6 +227,7 @@ const LinkedList = (function (headData=null) {
         insertAt,
         removeAt,
         setHead,
+        findInArray,
     }
 
 });
