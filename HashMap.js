@@ -19,8 +19,8 @@ const HashMap = (function () {
         let found = false;
 
         if (hMap[indx] != null) {
-            let cur = hMap[indx].headNode;
-            while (cur !== null) {
+            let cur = hMap[indx];
+            while (cur !== null && found === false) {
                 if (cur.find(key) != null) {
                     found = true;
                 } else {
@@ -128,7 +128,7 @@ const HashMap = (function () {
 
         if (hMap[indx] != null) {
             let cur = hMap[indx].headNode;
-            while (cur !== null) {
+            while (cur !== null && returnValue === null) {
                 if (cur.value[0] === key) {
                     returnValue = cur.value[1];
                 } else {
@@ -165,13 +165,14 @@ const HashMap = (function () {
 
     const clear = function () {
         hMap = new Array(capacity);
+        return [];
     }
 
 
     const values = function () {
         const values = [];
         for (let i = 0; i < hMap.length; i++) {
-            if (hMap[i] !== null) {
+            if (hMap[i] != null) {
                 let cur = hMap[i].headNode;
                 while (cur !== null) {
                     values.push(cur.value[1]);

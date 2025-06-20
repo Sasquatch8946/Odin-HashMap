@@ -23,3 +23,9 @@ test.set('dog', 'golden');
 console.log(test.entries());
 console.log(test.length());
 console.log(test.getCapacity());
+
+console.log(test.get('grape'));
+console.log(test.has('carrot'));
+console.log(test.values());
+console.log(test.clear());
+console.log(test.entries());
