@@ -29,10 +29,10 @@ const LinkedList = (function (headData=null) {
 
     const prepend = function (value) {
         if (headNode === null) {
-            headNode = new Node(value, null);
+            this.headNode = new Node(value, null);
         } else {
             const cur = new Node(value, headNode);
-            headNode = cur;
+            this.headNode = cur;
         }
     }
 
@@ -165,7 +165,7 @@ const LinkedList = (function (headData=null) {
         let prev;
 
         if (indx === 0) {
-            this.headNode = Node(value, cur.nextNode);
+            prepend(value);
             return;
         } else {
             while (count < indx) {
