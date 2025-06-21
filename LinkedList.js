@@ -165,13 +165,7 @@ const LinkedList = (function (headData=null) {
         let prev;
 
         if (indx === 0) {
-            if (headNode === null) {
-                // List is empty, create new head
-                headNode = new Node(value, null);
-            } else {
-                // List has nodes, replace the head's value
-                headNode.value = value;
-            }
+            this.headNode = Node(value, cur.nextNode);
             return;
         } else {
             while (count < indx) {
@@ -193,8 +187,9 @@ const LinkedList = (function (headData=null) {
         let prev;
 
         if (indx === 0) {
-            headNode = cur.nextNode;
-            return;
+            this.headNode = headNode.nextNode;
+            cur = null;
+            return this.headNode;
         } else {
             let count = 0;
             while (count < indx) {

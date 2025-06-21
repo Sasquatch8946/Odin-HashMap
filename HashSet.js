@@ -82,7 +82,7 @@ const HashSet = (function () {
         const len = length();
 
         if (len + 1 > (capacity * loadFactor)) {
-            console.log("RESIZING HASH MAP");
+            console.log("RESIZING HASH SET");
             capacity = capacity * 2;
             const newArray = new Array(capacity);
             copyMap(newArray);
@@ -108,7 +108,7 @@ const HashSet = (function () {
 
     }
 
-    const set = function (key) {
+    const add = function (key) {
 
         const indx = hash(key);
 
@@ -131,7 +131,7 @@ const HashSet = (function () {
 
     const remove = function (key) {
         const indx = hash(key);
-        if (indx < 0 || indx >= buckets.length) {
+        if (indx < 0 || indx >= hMap.length) {
             throw new Error("Trying to access index out of bounds");
         }
 
@@ -176,7 +176,7 @@ const HashSet = (function () {
 
     return {
         hash,
-        set,
+        add,
         has,
         remove,
         length,

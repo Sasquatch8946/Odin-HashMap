@@ -1,0 +1,4 @@
+[] Finish testing HashSet.js.
+[] Make sure HashSet.js is fully distinct from HashMap.js (i.e. unnecessary methods
+   are removed and everything ported over has been changed according to the new
+   data structure.)
